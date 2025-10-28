@@ -1,7 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Inter', 'Plus Jakarta Sans', system-ui, sans-serif;
+
+  /* Custom properties for theme colors */
+  --color-primary: 14 165 233;
+  --color-accent: 251 191 36;
+  --color-success: 34 197 94;
+  --color-danger: 239 68 68;
+
+  /* Glassmorphism properties */
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.dark {
+  --glass-bg: rgba(0, 0, 0, 0.2);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/10 dark:bg-black/20 backdrop-blur-lg rounded-2xl border border-white/20 dark:border-white/10 shadow-xl;
+  }
+
+  .glass-card-strong {
+    @apply bg-white/20 dark:bg-black/30 backdrop-blur-xl rounded-3xl border border-white/30 dark:border-white/20 shadow-2xl;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700
+           text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300
+           transform hover:scale-105 hover:shadow-glow active:scale-95
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none;
+  }
+
+  .btn-accent {
+    @apply bg-gradient-to-r from-accent-400 to-accent-500 hover:from-accent-500 hover:to-accent-600
+           text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300
+           transform hover:scale-105 hover:shadow-lg active:scale-95;
+  }
+
+  .btn-success {
+    @apply bg-gradient-to-r from-success-400 to-success-500 hover:from-success-500 hover:to-success-600
+           text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300
+           transform hover:scale-105 active:scale-95;
+  }
+
+  .btn-ghost {
+    @apply bg-white/5 hover:bg-white/10 dark:bg-black/10 dark:hover:bg-black/20
+           backdrop-blur-md border border-white/20 dark:border-white/10
+           px-6 py-3 rounded-xl transition-all duration-300
+           transform hover:scale-105 active:scale-95;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-400 via-accent-400 to-primary-600;
+  }
+
+  .animate-shimmer {
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+}
+
+/* Smooth scrolling */
+* {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-primary-400 dark:bg-primary-600 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-primary-500 dark:bg-primary-700;
+}
+
+/* Prevent text selection on buttons */
+button {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Focus visible styles */
+:focus-visible {
+  @apply outline-none ring-2 ring-primary-500 ring-offset-2 dark:ring-offset-gray-900;
+}
+
+/* Animation delays */
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
 }

@@ -153,30 +153,47 @@ const App = () => {
 
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${isDarkMode 
-      ? 'bg-gradient-to-b from-gray-900 to-indigo-900 text-white' 
-      : 'bg-gradient-to-b from-blue-100 to-purple-100 text-gray-900'}`} 
-      style={{ fontFamily: "'Comic Neue', cursive" }}>
-      <div className="max-w-5xl mx-auto p-4">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className={`text-4xl font-bold text-center ${isDarkMode ? 'text-purple-300' : 'text-indigo-600'} drop-shadow-md`}>
-            Fun Learning Quiz!
-          </h1>
-          <button 
-            onClick={toggleTheme} 
-            className={`p-2 rounded-full ${isDarkMode 
-              ? 'bg-yellow-400 text-gray-900' 
-              : 'bg-indigo-600 text-white'}`}
+    <div className={`min-h-screen transition-all duration-500 relative overflow-hidden ${isDarkMode
+      ? 'bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900'
+      : 'bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50'}`}>
+
+      {/* Animated background blobs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className={`absolute top-0 -left-4 w-72 h-72 ${isDarkMode ? 'bg-purple-500' : 'bg-blue-400'} rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float`}></div>
+        <div className={`absolute top-0 -right-4 w-72 h-72 ${isDarkMode ? 'bg-cyan-500' : 'bg-purple-400'} rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float animation-delay-2000`}></div>
+        <div className={`absolute -bottom-8 left-20 w-72 h-72 ${isDarkMode ? 'bg-pink-500' : 'bg-pink-400'} rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float animation-delay-4000`}></div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 py-8 relative z-10">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-8 animate-slide-down">
+          <div>
+            <h1 className={`text-5xl font-display font-extrabold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+              <span className="gradient-text">QuizTastic</span> 🎯
+            </h1>
+            <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+              Learning Made Fun & Interactive
+            </p>
+          </div>
+
+          <button
+            onClick={toggleTheme}
+            className={`p-4 rounded-2xl transition-all duration-300 transform hover:scale-110 hover:rotate-12 ${isDarkMode
+              ? 'glass-card text-yellow-400 hover:shadow-glow'
+              : 'glass-card text-indigo-600 hover:shadow-lg'}`}
             aria-label="Toggle theme"
           >
-            {isDarkMode ? <Sun size={24} /> : <Moon size={24} />}
+            {isDarkMode ? <Sun size={28} /> : <Moon size={28} />}
           </button>
         </div>
 
+        {/* Error message */}
         {error && (
-          <div className={`mb-4 p-4 rounded-lg ${isDarkMode ? 'bg-red-900 bg-opacity-30 text-red-200' : 'bg-red-100 text-red-700'} flex items-center`}>
-            <CircleAlert className="h-5 w-5 mr-2 flex-shrink-0" />
-            <p>{error}</p>
+          <div className="mb-6 glass-card border-danger-500/50 p-4 flex items-center gap-3 animate-scale-in">
+            <div className="p-2 rounded-full bg-danger-500/20">
+              <CircleAlert className="h-5 w-5 text-danger-400" />
+            </div>
+            <p className={isDarkMode ? 'text-danger-200' : 'text-danger-700'}>{error}</p>
           </div>
         )}
 
@@ -190,42 +207,59 @@ const App = () => {
           )}
 
           {(gameState === 'opposites' || gameState === 'multiplication' || gameState === 'animals' || gameState === 'wordmath') && (
-            <div className={`${isDarkMode 
-              ? 'bg-gray-800 text-white' 
-              : 'bg-white text-gray-900'} rounded-2xl shadow-xl p-6 mb-4`}>
-              <div className="flex justify-between items-center mb-4">
-                <div className="flex space-x-3">
+            <div className="glass-card-strong p-8 mb-6 animate-scale-in">
+              {/* Player badges */}
+              <div className="flex flex-wrap justify-between items-center gap-4 mb-6">
+                <div className="flex flex-wrap gap-3">
                   {players.map((player, index) => (
-                    <div 
+                    <div
                       key={index}
-                      className={`px-4 py-2 rounded-full font-semibold ${
+                      className={`group relative px-6 py-3 rounded-2xl font-semibold transition-all duration-300 transform ${
                         currentPlayerIndex === index
-                          ? isDarkMode 
-                            ? 'bg-purple-600 text-white ring-4 ring-purple-300 animate-pulse' 
-                            : 'bg-indigo-500 text-white ring-4 ring-indigo-200 animate-pulse'
-                          : isDarkMode
-                            ? 'bg-gray-700 text-gray-300'
-                            : 'bg-gray-100 text-gray-500'
+                          ? 'glass-card-strong scale-110 shadow-glow animate-pulse-slow'
+                          : 'glass-card opacity-60 hover:opacity-80'
                       }`}
                     >
-                      {player.name}: {player.score}
-                      <span className="ml-2 text-xs bg-yellow-500 text-black px-2 py-0.5 rounded-full">
-                        Lv {player.level}
-                      </span>
+                      <div className="flex items-center gap-3">
+                        <div className={`w-3 h-3 rounded-full ${currentPlayerIndex === index ? 'bg-green-400 animate-pulse' : 'bg-gray-400'}`}></div>
+                        <div>
+                          <div className={`text-sm font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                            {player.name}
+                          </div>
+                          <div className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                            Score: {player.score}
+                          </div>
+                        </div>
+                        <div className="ml-2 px-3 py-1 rounded-full bg-gradient-to-r from-accent-400 to-accent-500 text-white text-xs font-bold shadow-lg">
+                          ⭐ Lv {player.level}
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
-                <div className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-500'}`}>
-                  Round {roundsPlayed + 1} of {gameSettings.totalRounds}
+
+                <div className="glass-card px-4 py-2 rounded-xl">
+                  <div className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Round</div>
+                  <div className={`text-lg font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                    {roundsPlayed + 1} / {gameSettings.totalRounds}
+                  </div>
                 </div>
               </div>
 
+              {/* Level up notification */}
               {showLevelUp !== null && (
-                <div className="fixed top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-                  bg-yellow-400 text-black px-6 py-4 rounded-xl shadow-2xl z-50
-                  animate-bounce flex items-center space-x-2">
-                  <Trophy className="h-6 w-6" />
-                  <span className="font-bold text-lg">Level Up! {players[showLevelUp].name} is now level {players[showLevelUp].level}!</span>
+                <div className="fixed top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 animate-bounce">
+                  <div className="glass-card-strong bg-gradient-to-r from-accent-400 to-accent-500 px-8 py-6 shadow-2xl">
+                    <div className="flex items-center gap-4">
+                      <Trophy className="h-12 w-12 text-white animate-float" />
+                      <div className="text-white">
+                        <div className="text-2xl font-bold">Level Up! 🎉</div>
+                        <div className="text-sm opacity-90">
+                          {players[showLevelUp].name} reached Level {players[showLevelUp].level}!
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
 
@@ -243,52 +277,76 @@ const App = () => {
           )}
 
           {gameState === 'results' && (
-            <div className={`${isDarkMode 
-              ? 'bg-gray-800 text-white' 
-              : 'bg-white text-gray-900'} rounded-2xl shadow-xl p-8 text-center`}>
-              <h2 className={`text-3xl font-bold ${isDarkMode ? 'text-purple-300' : 'text-indigo-600'} mb-4`}>
-                Game Over!
-              </h2>
-              <div className="mb-6">
-                <Award className={`inline-block ${isDarkMode ? 'text-yellow-300' : 'text-yellow-500'} w-20 h-20 mb-2`} />
-                <h3 className="text-2xl font-bold">
-                  {players[0].score > players[1].score 
-                    ? `${players[0].name} Wins!` 
-                    : players[1].score > players[0].score 
-                      ? `${players[1].name} Wins!` 
-                      : "It's a Tie!"}
+            <div className="glass-card-strong p-12 text-center animate-scale-in">
+              {/* Trophy animation */}
+              <div className="mb-8">
+                <Award className="inline-block w-24 h-24 text-accent-400 animate-float mb-4" />
+                <h2 className={`text-4xl font-display font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                  Game Over!
+                </h2>
+                <h3 className="text-3xl font-bold gradient-text">
+                  {players[0].score > players[1].score
+                    ? `🏆 ${players[0].name} Wins!`
+                    : players[1].score > players[0].score
+                      ? `🏆 ${players[1].name} Wins!`
+                      : "🤝 It's a Tie!"}
                 </h3>
               </div>
-              
-              <div className="flex justify-center space-x-8 mb-8">
+
+              {/* Player results */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
                 {players.map((player, index) => (
-                  <div key={index} className="text-center">
-                    <div className={`text-xl font-bold ${index === 0 
-                      ? isDarkMode ? 'text-green-400' : 'text-green-600' 
-                      : isDarkMode ? 'text-purple-400' : 'text-purple-600'}`}>
-                      {player.name}
+                  <div
+                    key={index}
+                    className={`glass-card p-6 transform transition-all duration-300 hover:scale-105 ${
+                      (players[0].score > players[1].score && index === 0) ||
+                      (players[1].score > players[0].score && index === 1)
+                        ? 'ring-4 ring-accent-400 shadow-glow-lg'
+                        : ''
+                    }`}
+                  >
+                    <div className="mb-4">
+                      <div className={`text-2xl font-bold mb-1 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                        {player.name}
+                      </div>
+                      <div className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                        {player.grade}
+                      </div>
                     </div>
-                    <div className="text-4xl font-bold">{player.score}</div>
-                    <div className={`${isDarkMode ? 'text-gray-300' : 'text-gray-500'} mb-2`}>{player.grade}</div>
-                    <div className="bg-yellow-500 text-black px-3 py-1 rounded-full inline-block">
-                      Level {player.level}
+
+                    <div className="mb-4">
+                      <div className={`text-6xl font-bold gradient-text`}>
+                        {player.score}
+                      </div>
+                      <div className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                        Total Points
+                      </div>
                     </div>
-                    <div className={`mt-2 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                      {player.correctAnswers} correct answers
+
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between glass-card px-4 py-2 rounded-lg">
+                        <span className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Level</span>
+                        <div className="px-3 py-1 rounded-full bg-gradient-to-r from-accent-400 to-accent-500 text-white text-sm font-bold">
+                          ⭐ {player.level}
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between glass-card px-4 py-2 rounded-lg">
+                        <span className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Correct</span>
+                        <span className={`text-sm font-bold ${isDarkMode ? 'text-success-400' : 'text-success-600'}`}>
+                          ✓ {player.correctAnswers}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
-              
+
+              {/* Play again button */}
               <button
                 onClick={resetGame}
-                className={`${isDarkMode 
-                  ? 'bg-purple-600 hover:bg-purple-700 text-white' 
-                  : 'bg-indigo-500 hover:bg-indigo-600 text-white'} 
-                  px-6 py-3 rounded-full text-lg font-semibold transition-colors 
-                  flex items-center justify-center mx-auto`}
+                className="btn-primary text-lg flex items-center justify-center mx-auto gap-2"
               >
-                <RotateCcw className="mr-2 h-5 w-5" />
+                <RotateCcw className="h-5 w-5" />
                 Play Again
               </button>
             </div>
