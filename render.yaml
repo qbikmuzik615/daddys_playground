@@ -1,0 +1,20 @@
+services:
+  # QuizTastic Opposites - Educational Quiz Game
+  - type: web
+    name: quiztastic-opposites
+    runtime: static
+    buildCommand: |
+      # Run the setup script to extract apps
+      bash setup.sh
+      # Navigate to the app and build it
+      cd apps/quiztastic-opposites
+      npm install
+      npm run build
+    staticPublishPath: ./apps/quiztastic-opposites/dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: NODE_VERSION
+        value: 22
