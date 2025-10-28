@@ -1,0 +1,14 @@
+{
+  "name": "daddys_playground",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "skybox-ai"
+  ],
+  "scripts": {
+    "setup": "bash scripts/setup.sh",
+    "dev:hub": "yarn workspace skybox-ai dev",
+    "build:hub": "yarn workspace skybox-ai build"
+  }
+}

@@ -1,0 +1,30 @@
+name: Deploy Skybox Hub
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'skybox-ai/**'
+      - '.github/workflows/deploy-skybox-hub.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - run: corepack enable
+      - run: yarn install --frozen-lockfile
+      - run: yarn workspace skybox-ai build
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v2
+        with:
+          path: skybox-ai/dist
+      - uses: actions/deploy-pages@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}

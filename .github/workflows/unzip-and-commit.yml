@@ -1,0 +1,35 @@
+name: Unzip and Commit code folders.zip
+
+on:
+  workflow_dispatch:
+
+jobs:
+  unzip-and-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Unzip archive
+        run: |
+          ZIPFILE="code folders.zip"
+          APPDIR="apps"
+          mkdir -p "$APPDIR"
+          unzip -oq "$ZIPFILE" -d "$APPDIR"
+          cd "$APPDIR"
+          for dir in */; do
+            newdir=$(echo "$dir" | tr 'A-Z' 'a-z' | tr ' ' '-')
+            if [ "$dir" != "$newdir" ]; then
+              git mv "$dir" "$newdir"
+            fi
+          done
+          cd ..
+          rm -f "$ZIPFILE"
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add .
+          git commit -m "Unzip code folders and organize" || echo "Nothing to commit"
+          git push
